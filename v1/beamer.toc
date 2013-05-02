@@ -1,0 +1,16 @@
+\beamer@endinputifotherversion {3.10pt}
+\beamer@sectionintoc {1}{What is it?}{2}{0}{1}
+\beamer@subsectionintoc {1}{1}{Importance}{3}{0}{1}
+\beamer@sectionintoc {2}{Database}{4}{0}{2}
+\beamer@subsectionintoc {2}{1}{Implementation}{5}{0}{2}
+\beamer@subsectionintoc {2}{2}{Motivation}{6}{0}{2}
+\beamer@sectionintoc {3}{Server}{7}{0}{3}
+\beamer@subsectionintoc {3}{1}{Implementation}{8}{0}{3}
+\beamer@subsectionintoc {3}{2}{Example}{9}{0}{3}
+\beamer@subsectionintoc {3}{3}{Motivation}{10}{0}{3}
+\beamer@sectionintoc {4}{Client}{11}{0}{4}
+\beamer@subsectionintoc {4}{1}{Implementation}{12}{0}{4}
+\beamer@subsectionintoc {4}{2}{Motivation}{14}{0}{4}
+\beamer@sectionintoc {5}{Deployment}{15}{0}{5}
+\beamer@sectionintoc {6}{Future}{16}{0}{6}
+\beamer@sectionintoc {7}{Thanks}{17}{0}{7}

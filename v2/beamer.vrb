@@ -1,0 +1,44 @@
+\center 
+\frametitle{Handling deletes}
+\begin{tikzpicture}[node distance = 3cm, auto, scale=.7, every
+node/.style={transform shape} ]
+% Place nodes
+\node [block] (request) {Request to /api/create/};
+\node [decision, below of=request] (isconflict) {Key violation?};
+
+\node [block, left of=isconflict] (create) {Create the row.};
+\node [decision, right of=isconflict] (nocreate) {Does replace=1?};
+
+\node [block, below of=create] (ok) {\textbf{200 OK}};
+
+\node [dot, below of=nocreate] (nocreateDOT) {};
+
+\node [block, left of=nocreateDOT] (replace) {Replace it};
+\node [decision, below of=replace] (isreplace) {Does
+deleted=1};
+
+\node [block, left of=isreplace] (error) {\textbf{409
+Conflict}};
+
+% Draw edges
+\path [line] (request) -- (isconflict);
+\path [line] (isconflict) -- node [above] {no} (create);
+\path [line] (isconflict) -- node [above] {yes}
+(nocreate);
+\path [line] (create) -- (ok);
+
+\path [edge] (nocreate) -- (nocreateDOT);
+\path [line] (nocreateDOT) -- node [above] {yes}
+(replace);
+\path [line] (replace) -- (ok);
+
+\path [line] (nocreateDOT) |- node [right]
+{no} (isreplace);
+\path [line] (isreplace) -- node [right]
+{yes} (replace);
+
+\path [line] (isreplace) -- node [above]
+{no} (error);
+
+\end{tikzpicture}
+

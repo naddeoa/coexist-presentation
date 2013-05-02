@@ -1,0 +1,31 @@
+\frametitle {How does deployment work?}
+
+\begin{columns}[c]
+\column{1.6in}
+Tentatively, a conf file must be filled out. I have made a tool that will download and compile the latest version of Coexist and its clients according to this.
+\column{2.5in}
+\begin{lstlisting}
+
+; Android stuff
+name=Workoutlog
+image=logo.png
+notification=notification.png
+package=com.domain
+api=http://domain.com:/api/
+
+; Server stuff
+version=1
+user=
+pass=
+db=
+host=localhost
+dbms=mysql
+
+create_dir=ui
+schema_dir=sql
+
+\end{lstlisting}
+
+\end{columns}
+
+
