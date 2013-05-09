@@ -16,6 +16,7 @@
 \usepackage{caption}
 \usepackage{subcaption}
 \usepackage{paralist}
+
 % uncomment to force centering of captions in IEEE
 %\usepackage{subfig}
 
@@ -36,6 +37,12 @@
 \usetikzlibrary{shapes,arrows}
 \usetikzlibrary{positioning}
 \usetikzlibrary{shadows}
+\usetikzlibrary{trees}
+
+\tikzstyle{file}=[draw=black,thick,anchor=west]                                                                  
+\tikzstyle{selected}=[draw=red,fill=red!30]                                                                      
+\tikzstyle{dir}=[draw=black,dashed]   
+
 \tikzstyle{every entity} = [top color=white, bottom color=blue!30,
                             draw=blue!50!black!100, drop shadow]
 \tikzstyle{every weak entity} = [drop shadow={shadow xshift=.7ex,
@@ -73,7 +80,7 @@
 \definecolor{mauve}{rgb}{0.58,0,0.82}
 \lstset{ %
   language=SQL,                % the language of the code
-  basicstyle=\scriptsize,           % the size of the fonts that are used for the code
+  basicstyle=\tiny,           % the size of the fonts that are used for the code
   numbers=none,                   % where to put the line-numbers
   numberstyle=\tiny\color{gray},  % the style that is used for the line-numbers
   stepnumber=2,                   % the step between two line-numbers. If it's 1, each line 
@@ -83,7 +90,7 @@
   showspaces=false,               % show spaces adding particular underscores
   showstringspaces=false,         % underline spaces within strings
   showtabs=false,                 % show tabs within strings adding particular underscores
-  frame=single,                   % adds a frame around the code
+%  frame=single,                   % adds a frame around the code
   rulecolor=\color{black},        % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
   tabsize=2,                      % sets default tabsize to 2 spaces
   captionpos=b,                   % sets the caption-position to bottom
@@ -102,11 +109,45 @@
 
 
 \title[]{Coexist: A Minimalist Data Access System}
-\author[]{Anthony Naddeo \\ advisor: Sudarshan Chawathe}
+\author[]{Anthony Naddeo \\ Advisor: Sudarshan Chawathe}
 \date{\today}
 
 \usetheme{Berkeley}
-\usecolortheme{whale}
+\usecolortheme{seagull}
+
+
+\colorlet{punct}{red!60!black}
+\definecolor{background}{HTML}{EEEEEE}
+\definecolor{delim}{RGB}{20,105,176}
+\colorlet{numb}{magenta!60!black}
+\lstdefinelanguage{json}{
+basicstyle=\scriptsize\ttfamily,
+showstringspaces=false,
+breaklines=true,
+literate=
+*{0}{{{\color{numb}0}}}{1}
+{1}{{{\color{numb}1}}}{1}
+{2}{{{\color{numb}2}}}{1}
+{3}{{{\color{numb}3}}}{1}
+{4}{{{\color{numb}4}}}{1}
+{5}{{{\color{numb}5}}}{1}
+{6}{{{\color{numb}6}}}{1}
+{7}{{{\color{numb}7}}}{1}
+{8}{{{\color{numb}8}}}{1}
+{9}{{{\color{numb}9}}}{1}
+{:}{{{\color{punct}{:}}}}{1}
+{,}{{{\color{punct}{,}}}}{1}
+{\{}{{{\color{delim}{\{}}}}{1}
+{\}}{{{\color{delim}{\}}}}}{1}
+{[}{{{\color{delim}{[}}}}{1}
+{]}{{{\color{delim}{]}}}}{1},
+}
+
+
+
+
+
+
 
 \begin{document}
 
@@ -121,16 +162,49 @@ to present Coexist: a minimalist data access system for arbitrary client types.
 \end{frame}
 
 
+
+%--------------------------------------------------------
+\section{Target User}
+
+\begin{frame}
+\frametitle{Target application and user}
+
+Coexist targets programmers who focuses on a small subset of applications that
+deal with data storage.
+
+\begin{center}
+\includegraphics[width=.8\linewidth]{images/app_class.png}
+\end{center}
+\end{frame}
+
+
+%--------------------------------------------------------
+\subsection{Example Apps}
+
+\begin{frame}
+Workout, diet, inventory and weather monitoring applications likely fall under
+this category.
+\frametitle{Example data store applications}
+\begin{columns}
+  \column{2.6in}
+\includegraphics[width=\linewidth]{images/ex2.png}
+\column{1.4in}
+\includegraphics[width=\linewidth]{images/ex1.jpg}
+\end{columns}
+\end{frame}
+
 %--------------------------------------------------------
 \section{The Problem}
 
+
 \begin{frame}
 \frametitle{The Problem}
-
+These applications take too long to create!
+\vspace{.5in}
 \begin{itemize}
   \item Redundant application development
   \item Single platform clients in popular frameworks
-  \item Application development involves coding
+  \item Application development involves unnecessary coding 
 \end{itemize}
 
 \note{
@@ -152,52 +226,100 @@ to present Coexist: a minimalist data access system for arbitrary client types.
 
 
 %--------------------------------------------------------
-\subsection{Available Solutions}
+%\subsection{Available Solutions}
+%
+%\begin{frame}
+%\frametitle{Available Solutions}
+%
+%\emph{``It lets you write beautiful code by favoring convention over
+%configuration''} \\
+%\hfill -Ruby on Rails \\
+%\hfill
+%
+%\emph{``Django is a high-level Python Web framework that encourages rapid development
+%and clean, pragmatic design''} \\
+%\hfill -Django \\
+%\hfill
+%
+%\emph{``With it you can create small web apps like an Address book, a To do list
+%or even a Wine Cellar without writing any code''} \\
+%\hfill -Evolutility \\
+%
+%\note{
+%
+%}
+%
+%\end{frame}
 
-\begin{frame}
-\frametitle{Available Solutions}
-
-\emph{``It lets you write beautiful code by favoring convention over
-configuration''} \\
-\hfill -Ruby on Rails \\
-\hfill
-
-\emph{``Django is a high-level Python Web framework that encourages rapid development
-and clean, pragmatic design''} \\
-\hfill -Django \\
-\hfill
-
-\emph{``With it you can create small web apps like an Address book, a To do list
-or even a Wine Cellar without writing any code''} \\
-\hfill -Evolutility \\
-
-\note{
-
-}
-
-\end{frame}
 
 
 
-%--------------------------------------------------------
-\subsection{Ideal Solution}
 
-\begin{frame}
-\frametitle{An Ideal Solution Involves...}
-\begin{itemize}
-  \item Codeless application development
-  \item Clients for multiple platforms
-  \item Minimal development times
-\end{itemize}
-
-\note{
-
-}
-\end{frame}
 
 
 %--------------------------------------------------------
 \section{My Solution}
+
+\begin{frame}
+\frametitle{Coexist: API based data access}
+
+
+\begin{columns}[c]
+\column{2.2in}
+
+Codeless application development
+\begin{itemize}
+\item Provide compatible clients
+\end{itemize}
+\pad
+Clients for multiple platforms
+\begin{itemize}
+\item Decouple the server and clients
+\end{itemize}
+
+\pad
+Minimal development times
+\begin{itemize}
+\item Require only configuration files
+\end{itemize}
+
+
+\column{2in}
+\centering
+\begin{tikzpicture}[node distance = 2.5cm, auto]
+  % Place nodes
+  \node [db] (db) {DB};
+  \node [block, below of=db] (server) {application};
+  
+%  \node [cloud, below of=server, node distance = 2cm] (client2) {Android};
+%  \node [cloud, right of=client2, node distance = 2cm] (client1) {Web};
+%  \node [cloud, left of=client2, node distance = 2cm] (client3) {iOS};
+
+  %pahts
+  
+  \path [line] (server) -- (db);
+  \path [line] (db) -- (server);
+  
+%  \path [line] (client1) -- (server);
+%  \path [line] (client2) -- (server);
+%  \path [line] (client3) -- (server);
+%  \path [line] (server) -- (client1);
+%  \path [line] (server) -- (client2);
+%  \path [line] (server) -- (client3);
+
+\end{tikzpicture}
+%\includegraphics[width=\linewidth]{images/old.png}
+
+\end{columns}
+\end{frame}
+
+
+
+
+
+
+%--------------------------------------------------------
+%\section{My Solution}
 
 \begin{frame}
 \frametitle{Coexist: API based data access}
@@ -234,7 +356,7 @@ Minimal development times
   
   \node [cloud, below of=server, node distance = 2cm] (client2) {Android};
   \node [cloud, right of=client2, node distance = 2cm] (client1) {Web};
-  \node [cloud, left of=client2, node distance = 2cm] (client3) {Qt};
+  \node [cloud, left of=client2, node distance = 2cm] (client3) {iOS};
 
   %pahts
   
@@ -255,7 +377,79 @@ Minimal development times
 
 
 %--------------------------------------------------------
-\subsection{API Overview}
+\subsection{Structure}
+
+\begin{frame}
+\frametitle{Coexist at a glance}
+
+\begin{figure}
+    \centering
+    \begin{subfigure}[b]{0.5\textwidth}
+        \centering
+        \includegraphics[width=.3\textwidth]{images/old_project.png}
+        \caption{A single Android project without Coexist. About 4000 lines
+        long.}
+        \label{fig:gull}
+    \end{subfigure}%
+    ~ %add desired spacing between images, e. g. ~, \quad, \qquad etc.
+      %(or a blank line to force the subfigure onto a new line)
+    \begin{subfigure}[b]{0.5\textwidth}
+        \centering
+        \includegraphics[width=.8\textwidth]{images/new_project.png}
+        \caption{An entire Coexist project that produces multiple clients. About
+        15 lines long.}
+        \label{fig:tiger}
+    \end{subfigure}
+\end{figure}
+
+
+%\begin{figure}[b!]
+%\includegraphics[width=.32\linewidth]{images/old_project.png}
+%\caption{A single Android project without Coexist.}
+%\label{fig:list}
+%\end{figure}
+%
+%\column{2in}
+%\begin{figure}[b!]
+%\includegraphics[width=.8\linewidth]{images/new_project.png}
+%\caption{An entire Coexist project that produces multiple clients.}
+%\label{fig:list}
+%\end{figure}
+
+
+%\begin{tikzpicture}[scale=.7, every node/.style={transform shape},%                                              
+%grow via three points={one child at (0.5,-0.7) and                                                             
+%two children at (0.5,-0.7) and (0.5,-1.4)},                                                                    
+%edge from parent path={(\tikzparentnode.south) |-
+%(\tikzchildnode.west)}]                                      
+%\node [dir]  {myproject}                                                                                       
+%  child {node [dir] {ui}                                                                                       
+%    child {node [dir] {1}                                                                                      
+%      child {node [file] {metamodel.json}}                                                                     
+%    }                                                                                                          
+%  }                                                                                                            
+%  child [missing] {}                                                                                           
+%  child [missing] {}                                                                                           
+%  child {node [file]
+%{coexist.ini}}                                                                            
+%child {node [file]
+%{logo.png}}                                                                               
+%child {node
+%[file]
+%{notification.png}}                                                                       
+%
+%;                                                                                                            
+%\end{tikzpicture}  
+
+\end{frame}
+
+
+
+
+
+
+%--------------------------------------------------------
+\section{API Overview}
 
 \begin{frame}[fragile]
 \frametitle{API Overview}
@@ -303,6 +497,34 @@ Minimal development times
 \end{frame}
 
 
+%--------------------------------------------------------
+\section{Demo}
+\begin{frame}
+\frametitle{Demo}
+
+
+\begin{figure}
+    \centering
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/ss1.png}
+    \end{subfigure}%
+    ~ %add desired spacing between images, e. g. ~, \quad, \qquad etc.
+      %(or a blank line to force the subfigure onto a new line)
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/ss2.png}
+    \end{subfigure}
+    ~ %add desired spacing between images, e. g. ~, \quad, \qquad etc.
+      %(or a blank line to force the subfigure onto a new line)
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/ss3.png}
+    \end{subfigure}
+\end{figure}
+
+\end{frame}
+
 
 
 %--------------------------------------------------------
@@ -310,7 +532,7 @@ Minimal development times
 
 \begin{frame}
 \frametitle{/api/sync: Database replication}
-We make use of \textit{metacolumns}: typical SQL columns that are used for some application level purpose.
+\textit{metacolumns}: typical SQL columns that are used for some application level purpose.
 
 \begin{columns}[c]
 \column{2in}
@@ -374,21 +596,21 @@ We make use of \textit{metacolumns}: typical SQL columns that are used for some 
 \begin{frame}
 \frametitle{Sample client - server dialog}
 
-\begin{columns}[c]
-\column{2in}
-Here is a sample conversation between a server and a client who has an out of date schema while attempting to re-sync. \\
+%\begin{columns}[c]
+%\column{2in}
+%Here is a sample conversation between a server and a client who has an out of date schema while attempting to re-sync. \\
 
-\pad
+%\pad
 
-\emph{note:} The application will not require updates for database changes.
-\column{2in}
+%\column{2in}
 \scalebox{.6}{
 \begin{tikzpicture}[node distance = 2cm, auto]
   % Place nodes
   \node [block] (client) {client};
   \node [block, right of=client, node distance=6cm] (server) {server};
   
-  \node [dot, below of=client, node distance=2.5cm, label=180:1] (c1) {};
+  \node [dot, below of=client, node distance=2.5cm, label=180:\Large{\bf Can I have all the
+  data I'm missing?}] (c1) {};
   \node [dot, below of=server, node distance=2.5cm] (s1) {};
   \path [line] (c1) -- node [above, align=left] {
     \tt\textbf{GET /api/sync} \\ 
@@ -398,13 +620,15 @@ Here is a sample conversation between a server and a client who has an out of da
   \path [edge] (client) -- (c1);
   \path [edge] (server) -- (s1);
 
-  \node [dot, below of=c1, node distance=1cm, label=180:2] (c2) {};
+  \node [dot, below of=c1, node distance=1cm, label=180:\Large{\bf Sorry your database version is
+  out of date!}] (c2) {};
   \node [dot, below of=s1, node distance=1cm] (s2) {};
   \path [line] (s2) -- node [above] {\tt\textbf{409 CONFLICT}} (c2);
   \path [edge] (c2) -- (c1);
   \path [edge] (s2) -- (s1);
 
-  \node [dot, below of=c2, node distance=1.5cm, label=180:3] (c3) {};
+  \node [dot, below of=c2, node distance=1.5cm, label=180:\Large{\bf Can I have the new
+  database information?}] (c3) {};
   \node [dot, below of=s2, node distance=1.5cm] (s3) {};
   \path [line] (c3) -- node [above, align=left] {
     \tt\textbf{GET /api/schema} \\ 
@@ -412,7 +636,8 @@ Here is a sample conversation between a server and a client who has an out of da
   \path [edge] (c2) -- (c3);
   \path [edge] (s2) -- (s3);
 
-  \node [dot, below of=c3, node distance=2cm, label=180:4] (c4) {};
+  \node [dot, below of=c3, node distance=2cm, label=180:\Large{\bf Sure! This is the
+  version 2 database}] (c4) {};
   \node [dot, below of=s3, node distance=2cm] (s4) {};
   \path [line] (s4) -- node [above, align=left] {
     \tt\textbf{200 OK} \\
@@ -421,7 +646,8 @@ Here is a sample conversation between a server and a client who has an out of da
   \path [edge] (c3) -- (c4);
   \path [edge] (s3) -- (s4);
     
-  \node [dot, below of=c4, node distance=2cm, label=180:5] (c5) {};
+  \node [dot, below of=c4, node distance=2cm, label=180:\Large{\bf Can I have all the data
+  I'm missing?}] (c5) {};
   \node [dot, below of=s4, node distance=2cm] (s5) {};
   \path [line] (c5) -- node [above, align=left] {
     \tt\textbf{GET /api/sync} \\ 
@@ -433,7 +659,7 @@ Here is a sample conversation between a server and a client who has an out of da
   \path [edge] (s4) -- (s5);
 
 
-  \node [dot, below of=c5, node distance=2cm, label=180:6] (c6) {};
+  \node [dot, below of=c5, node distance=2cm, label=180:\Large{\bf Here you go!}] (c6) {};
   \node [dot, below of=s5, node distance=2cm] (s6) {};
   \path [line] (s6) -- node [above, align=left] {
     \tt\textbf{200 OK} \\
@@ -445,7 +671,7 @@ Here is a sample conversation between a server and a client who has an out of da
 
 \end{tikzpicture}
 }
-\end{columns}
+%\end{columns}
 
 
 \end{frame}
@@ -455,166 +681,212 @@ Here is a sample conversation between a server and a client who has an out of da
 
 
 
+%--------------------------------------------------------
+%\subsection{Implementation}
+%
+%\begin{frame}
+%\frametitle{How does the mobile client work.}
+%
+%
+%The entire database is mirrored locally.
+%
+%\vbox to 30pt{}
+%\begin{columns}[c]
+%\column{2in}
+%
+%\begin{itemize}
+%\item Only dependent on network for posting changes
+%\item Faster query times than Window or Cache could ever reach
+%\item Simple to understand
+%\end{itemize}
+%
+%\column{2in}
+%\scalebox{.65}{% 
+%\begin{tikzpicture}[node distance = 2cm, auto]
+%  % Place nodes
+%  \node [block] (client) {client};
+%  \node [block, right of=client, node distance=5cm] (server) {server};
+%  \node [db, below of=client, node distance=4cm, align=center] (database) {local \\ database};
+%
+%  % Draw edges
+%  % Need to align in order to line break
+%  \path [line] (client) -- node {udpate} (server);
+%  \path [line] (server) |- node {mirror} (database);
+%  \path [line] (database) -- node [align=left] {query} (client);
+%\end{tikzpicture}
+%}
+%\end{columns}
+%
+%
+%\end{frame}
+
+
 
 %--------------------------------------------------------
-\subsection{Implementation}
+%\section{Metamodel}
+%
+%\begin{frame}[fragile]
+%\frametitle{/api/metamodel: Mapping data to user interfaces}
+%
+%%\begin{columns}[c]
+%%\column{2.5in}
+%\begin{lstlisting}[language=sql,basicstyle=\normalsize]
+%CREATE TABLE workout_log(
+% user VARCHAR(10),
+% exercise VARCHAR(10) REFERENCES Exercises,
+% weight INTEGER,
+% date_done DATE
+%);
+%\end{lstlisting}
+%
+%
+%%\column{1.9in}
+%
+%\begin{lstlisting}[language=json,basicstyle=\normalsize]
+%{
+%  "forms" : [
+%  {
+%    "label":"Workout",
+%    "table":"workout_log",
+%    "fields": [...]
+%  }
+%  ]
+%}
+%\end{lstlisting}
+%
+%
+%%\end{columns}
+%\end{frame}
+
+
+
+
+%--------------------------------------------------------
+%\begin{frame}[fragile]
+%\frametitle{How does the client know what to request?}
+%
+%\begin{columns}[c]
+%\column{2in}
+%\begin{lstlisting}
+%[
+%{"tag":"CAPS05654",
+%"serial":"000203001056084",
+%"model":"TCH-17",
+%"contract number":"none",
+%"hostname":"USR-Orono1",
+%"description":"TotalControl17"
+%},
+%{"tag":"CAPS05407",
+%"serial":"72729663",
+%"model":"7206VXR",
+%"contract number":"none",
+%"hostname":"GW-UMF",
+%"description":"6.SlotChassis"
+%}
+%]
+%\end{lstlisting}
+%\column{2in}
+%
+%\begin{lstlisting}
+%create table Exercises(
+%  exercise VARCHAR(30) PRIMARY KEY,
+%  mod_ts DATETIME, 
+%  deleted INTEGER  
+%);
+%
+%create table Sets(
+%  name VARCHAR(30),
+%  exercise VARCHAR(30),
+%  set_num INTEGER ,
+%  reps_done INTEGER ,
+%  weight INTEGER ,
+%  date_done DATE,
+%  mod_ts DATETIME, 
+%  deleted INTEGER 
+%);
+%
+%\end{lstlisting}
+%
+%\end{columns}
+%
+%\end{frame}
+
+
+
+
+%--------------------------------------------------------
+%\section{Deployment}
+%\begin{frame}[fragile]
+%\frametitle{How does deployment work?}
+%
+%\begin{columns}[c]
+%\column{1.6in}
+%Tentatively, a conf file must be filled out. I have made a tool that will download and compile the latest version of Coexist and its clients according to this.
+%\column{2.5in}
+%\begin{lstlisting}
+%
+%; Android stuff
+%name=Workoutlog
+%image=logo.png
+%notification=notification.png
+%package=com.domain
+%api=http://domain.com:/api/
+%
+%; Server stuff
+%version=1
+%user=
+%pass=
+%db=
+%host=localhost
+%dbms=mysql
+%
+%create_dir=ui 
+%schema_dir=sql
+%
+%\end{lstlisting}
+%
+%\end{columns}
+%\end{frame}
+
+
+
+
+%--------------------------------------------------------
+%\section{Future}
+%
+%\begin{frame}
+%\frametitle{What needs to be done?}
+%
+%\begin{itemize}
+%\item Add more client types (Qt, Desktop Java etc.)
+%\item Support more client features (i.e. Barcode scanning on mobile clients.)
+%\item Create more tools for automation.
+%\end{itemize}
+%
+%\end{frame}
+
+
+%--------------------------------------------------------
+\section{Conclusion}
 
 \begin{frame}
-\frametitle{How does the mobile client work.}
-
-
-The entire database is mirrored locally.
-
-\vbox to 30pt{}
-\begin{columns}[c]
-\column{2in}
+\frametitle{In Conclusion}
 
 \begin{itemize}
-\item Only dependent on network for posting changes
-\item Faster query times than Window or Cache could ever reach
-\item Simple to understand
+  \item Drastically reduces the amount of code required to produce data store
+    applications.
+  \item Create clients for the web, Android and more without any additional
+    work.
 \end{itemize}
 
-\column{2in}
-\scalebox{.65}{% 
-\begin{tikzpicture}[node distance = 2cm, auto]
-  % Place nodes
-  \node [block] (client) {client};
-  \node [block, right of=client, node distance=5cm] (server) {server};
-  \node [db, below of=client, node distance=4cm, align=center] (database) {local \\ database};
-
-  % Draw edges
-  % Need to align in order to line break
-  \path [line] (client) -- node {udpate} (server);
-  \path [line] (server) |- node {mirror} (database);
-  \path [line] (database) -- node [align=left] {query} (client);
-\end{tikzpicture}
-}
-\end{columns}
-
+\pad
+\pad
+\pad
+Thanks to my advisor, Sudarshan Chawathe
 
 \end{frame}
 
 
-%--------------------------------------------------------
-
-\begin{frame}[fragile]
-\frametitle{How does the client know what to request?}
-
-
-\begin{columns}[c]
-\column{2in}
-\begin{lstlisting}
-[
-{"tag":"CAPS05654",
-"serial":"000203001056084",
-"model":"TCH-17",
-"contract number":"none",
-"hostname":"USR-Orono1",
-"description":"TotalControl17"
-},
-{"tag":"CAPS05407",
-"serial":"72729663",
-"model":"7206VXR",
-"contract number":"none",
-"hostname":"GW-UMF",
-"description":"6.SlotChassis"
-}
-]
-\end{lstlisting}
-\column{2in}
-
-\begin{lstlisting}
-create table Exercises(
-  exercise VARCHAR(30) PRIMARY KEY,
-  mod_ts DATETIME, 
-  deleted INTEGER  
-);
-
-create table Sets(
-  name VARCHAR(30),
-  exercise VARCHAR(30),
-  set_num INTEGER ,
-  reps_done INTEGER ,
-  weight INTEGER ,
-  date_done DATE,
-  mod_ts DATETIME, 
-  deleted INTEGER 
-);
-
-\end{lstlisting}
-
-\end{columns}
-
-\end{frame}
-
-
-
-
-%--------------------------------------------------------
-\section{Deployment}
-
-\begin{frame}[fragile]
-\frametitle{How does deployment work?}
-
-\begin{columns}[c]
-\column{1.6in}
-Tentatively, a conf file must be filled out. I have made a tool that will download and compile the latest version of Coexist and its clients according to this.
-\column{2.5in}
-\begin{lstlisting}
-
-; Android stuff
-name=Workoutlog
-image=logo.png
-notification=notification.png
-package=com.domain
-api=http://domain.com:/api/
-
-; Server stuff
-version=1
-user=
-pass=
-db=
-host=localhost
-dbms=mysql
-
-create_dir=ui 
-schema_dir=sql
-
-\end{lstlisting}
-
-\end{columns}
-
-
-\end{frame}
-
-
-
-
-%--------------------------------------------------------
-\section{Future}
-
-\begin{frame}
-\frametitle{What needs to be done?}
-
-\begin{itemize}
-\item Add more client types (Qt, Desktop Java etc.)
-\item Support more client features (i.e. Barcode scanning on mobile clients.)
-\item Create tools to automate the configuration.
-\end{itemize}
-
-\end{frame}
-
-
-%--------------------------------------------------------
-\section{Thanks}
-
-\begin{frame}
-\frametitle{I would like to thank}
-
-My advisor, Sudarshan Chawathe
-
-\end{frame}
 
 
 

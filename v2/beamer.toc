@@ -1,13 +1,12 @@
 \beamer@endinputifotherversion {3.10pt}
-\beamer@sectionintoc {1}{The Problem}{2}{0}{1}
-\beamer@subsectionintoc {1}{1}{Available Solutions}{3}{0}{1}
-\beamer@subsectionintoc {1}{2}{Ideal Solution}{4}{0}{1}
-\beamer@sectionintoc {2}{My Solution}{5}{0}{2}
-\beamer@subsectionintoc {2}{1}{API Overview}{6}{0}{2}
-\beamer@subsectionintoc {2}{2}{API Example}{7}{0}{2}
-\beamer@sectionintoc {3}{Database Replication}{8}{0}{3}
-\beamer@subsectionintoc {3}{1}{Example}{9}{0}{3}
-\beamer@subsectionintoc {3}{2}{Implementation}{10}{0}{3}
-\beamer@sectionintoc {4}{Deployment}{12}{0}{4}
-\beamer@sectionintoc {5}{Future}{13}{0}{5}
-\beamer@sectionintoc {6}{Thanks}{14}{0}{6}
+\beamer@sectionintoc {1}{Target User}{2}{0}{1}
+\beamer@subsectionintoc {1}{1}{Example Apps}{3}{0}{1}
+\beamer@sectionintoc {2}{The Problem}{4}{0}{2}
+\beamer@sectionintoc {3}{My Solution}{5}{0}{3}
+\beamer@subsectionintoc {3}{1}{Structure}{7}{0}{3}
+\beamer@sectionintoc {4}{API Overview}{8}{0}{4}
+\beamer@subsectionintoc {4}{1}{API Example}{9}{0}{4}
+\beamer@sectionintoc {5}{Demo}{10}{0}{5}
+\beamer@sectionintoc {6}{Database Replication}{11}{0}{6}
+\beamer@subsectionintoc {6}{1}{Example}{12}{0}{6}
+\beamer@sectionintoc {7}{Conclusion}{13}{0}{7}
